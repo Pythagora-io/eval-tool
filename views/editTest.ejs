@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('partials/_head.ejs') %>
+    <title>Edit Test</title>
+</head>
+<body>
+    <%- include('partials/_header.ejs') %>
+    <div class="container">
+        <h1>Edit Test</h1>
+        <form action="/tests/<%= test.test_id %>/" method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Test Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="<%= test.name %>" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Messages</label>
+                <div id="messagesList">
+                    <% test.messages.forEach(function(message, index) { %>
+                    <div class="message-row" data-index="<%= index %>">
+                        <select class="form-select role-select" name="messages[<%= index %>][role]">
+                            <option value="system" <%= message.role === 'system' ? 'selected' : '' %>>System</option>
+                            <option value="user" <%= message.role === 'user' ? 'selected' : '' %>>User</option>
+                            <option value="assistant" <%= message.role === 'assistant' ? 'selected' : '' %>>Assistant</option>
+                        </select>
+                        <textarea class="form-control content-textarea" name="messages[<%= index %>][content]" rows="2"><%= message.content %></textarea>
+                        <button type="button" class="btn btn-danger remove-message-btn">Remove</button>
+                    </div>
+                    <% }); %>
+                </div>
+                <button type="button" id="addMessageBtn" class="btn btn-primary">Add Message</button>
+                <button type="button" id="importMessagesBtn" class="btn btn-secondary">Import</button>
+                <input type="file" id="importMessagesFile" accept=".json" style="display: none;">
+            </div>
+            <div class="mb-3">
+                <label for="review_instructions" class="form-label">Review Instructions</label>
+                <textarea class="form-control" id="review_instructions" name="review_instructions" rows="3"><%= test.review_instructions %></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <h2>Scenarios</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Provider</th>
+                    <th>Model</th>
+                    <th>Temperature</th>
+                    <th>Comments</th>
+                    <th>Score %</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% test.scenarios.forEach(function(scenario, index) { %>
+                    <tr>
+                        <td><%= scenario.provider %></td>
+                        <td><%= scenario.model %></td>
+                        <td><%= scenario.temp %></td>
+                        <td><%= scenario.comments %></td>
+                        <td><%= scenario.scorePercentage %>%</td>
+                        <td><a href="/tests/<%= test.test_id %>/scenarios/<%= index %>">View Details</a></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6" class="text-end">
+                        <a href="/tests/<%= test.test_id %>/run" class="btn btn-info">Configure and Run</a>
+                        <form action="/tests/<%= test.test_id %>/review" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-warning">Review Scenarios</button>
+                        </form>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <%- include('partials/_footer.ejs') %>
+    <script src="/js/editTest.js"></script>
+    <script src="/js/reviewScenarios.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/_head.ejs') %>
+  <body>
+<%- include('partials/_header.ejs') %>
+    <main role="main" class="container mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Eval Tool</h1>
+        <form action="/tests" method="POST">
+          <button type="submit" class="btn btn-primary">New Test</button>
+        </form>
+      </div>
+      <% if(tests.length > 0) { %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Created At</th>
+              <th>Number of Results</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% tests.forEach(test => { %>
+              <tr>
+                <td><a href="/tests/<%= test.test_id %>"><%= test.name %></a></td>
+                <td><%= new Date(test.tested_at).toLocaleDateString() %></td>
+                <td><%= test.scenarios.reduce((acc, scenario) => acc + scenario.results.length, 0) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No tests found.</p>
+      <% } %>
+    </main>
+  </body>
+<%- include('partials/_footer.ejs') %>
+  <script src="/js/main.js"></script>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('partials/_head.ejs') %>
+    <title>Scenario Details</title>
+</head>
+<body>
+    <%- include('partials/_header.ejs') %>
+    <div class="container">
+        <h1>Scenario Details</h1>
+        <p><strong>Test ID:</strong> <%= test_id %></p>
+        <p><strong>Scenario Index:</strong> <%= scenario_index %></p>
+        <p><strong>Provider:</strong> <%= scenario.provider %></p>
+        <p><strong>Model:</strong> <%= scenario.model %></p>
+        <p><strong>Temperature:</strong> <%= scenario.temp %></p>
+        <p><strong>Comments:</strong> <%= scenario.comments %></p>
+        <h2>Results</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Response</th>
+                    <th>Review</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% scenario.results.forEach(function(result) { %>
+                    <tr>
+                        <td><%= result.response %></td>
+                        <td><%= result.review %></td>
+                        <td><%= result.score %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+    <%- include('partials/_footer.ejs') %>
+    <script>
+        // Add any JavaScript needed for handling form submission or validation here
+    </script>
+</body>
+</html>
