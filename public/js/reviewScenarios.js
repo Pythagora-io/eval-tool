@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     reviewForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the form from submitting through standard form submission
 
-        const testId = this.action.split('/').pop().split('/review')[0];
+        const testId = this.action.replace(/.*\/tests\//, '').split('/review')[0];
         const url = `/tests/${testId}/review`;
 
         fetch(url, {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             if(data.success) {
-                console.log('Review completed successfully.');
+                alert('Review completed successfully.');
                 window.location.reload(); // Reload the page to reflect the changes
             } else {
                 console.error('Failed to review scenarios.');

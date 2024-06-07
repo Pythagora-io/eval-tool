@@ -224,7 +224,7 @@ router.post('/tests/:test_id/review', isAuthenticated, async (req, res) => {
     }
 
     await test.save();
-    res.redirect(`/tests/${testId}/`);
+    res.json({ success: true }); // Changed from redirect to JSON response
   } catch (error) {
     console.error('Error during scenario review:', error);
     res.status(500).send('Failed to review scenarios');
