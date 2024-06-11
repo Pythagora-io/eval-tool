@@ -9,16 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
 function addScenario() {
     const scenariosDiv = document.getElementById('scenarios');
     const scenarioCount = scenariosDiv.children.length;
+    const providersData = JSON.parse(document.getElementById('modelData').dataset.models);
+    const providerOptions = Object.keys(providersData).map(provider => `<option value="${provider}">${provider}</option>`).join('');
+
     const newScenarioHtml = `
         <div class="scenario" data-index="${scenarioCount}">
             <label>Provider:</label>
-            <select name="scenarios[${scenarioCount}][provider]" class="form-select">
-                <option value="openai">OpenAI</option>
-                <option value="anthropic">Anthropic</option>
-                <option value="groq">Groq</option>
+            <select name="scenarios[${scenarioCount}][provider]" class="form-select" onchange="updateModelDropdown(this)">
+                ${providerOptions}
             </select>
             <label>Model:</label>
-            <input type="text" name="scenarios[${scenarioCount}][model]" required class="form-control">
+            <select name="scenarios[${scenarioCount}][model]" class="form-select"></select>
             <label>Temperature:</label>
             <input type="number" step="0.01" name="scenarios[${scenarioCount}][temp]" required class="form-control">
             <label>N:</label>
@@ -27,6 +28,24 @@ function addScenario() {
         </div>
     `;
     scenariosDiv.insertAdjacentHTML('beforeend', newScenarioHtml);
+    updateModelDropdown(scenariosDiv.lastElementChild.querySelector('select[name^="scenarios["]'));
+}
+
+function updateModelDropdown(selectElement) {
+    const provider = selectElement.value;
+    const modelSelect = selectElement.parentNode.querySelector('select[name$="[model]"]');
+    modelSelect.innerHTML = '';
+
+    const modelsData = JSON.parse(document.getElementById('modelData').dataset.models);
+
+    if (modelsData[provider]) {
+        modelsData[provider].forEach(model => {
+            const option = document.createElement('option');
+            option.value = model;
+            option.textContent = model;
+            modelSelect.appendChild(option);
+        });
+    }
 }
 
 function removeScenario(buttonElement) {

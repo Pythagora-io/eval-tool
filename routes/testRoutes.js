@@ -95,7 +95,16 @@ router.get('/tests/:test_id/run/', isAuthenticated, async (req, res) => {
     if (test.user_id.toString() !== req.session.userId) {
       return res.status(403).send('Unauthorized access to the test');
     }
-    res.render('testRunConfig', { test, providers: ['openai', 'anthropic', 'groq'] });
+
+    // Reading model data from environment variables
+    const models = {
+      openai: process.env.OPENAI_MODELS.split(','),
+      anthropic: process.env.ANTHROPIC_MODELS.split(','),
+      groq: process.env.GROQ_MODELS.split(',')
+    };
+
+    // Passing models to the front-end
+    res.render('testRunConfig', { test, providers: ['openai', 'anthropic', 'groq'], models });
   } catch (error) {
     console.error('Failed to open the test run configuration page:', error.message);
     console.error(error.stack);
