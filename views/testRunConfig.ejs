@@ -12,7 +12,29 @@
         <form id="scenarioForm" action="/tests/<%= test.test_id %>/run" method="post">
             <input type="hidden" name="test_id" value="<%= test.test_id %>">
             <div id="scenarios">
-                <!-- Scenarios will be added here dynamically -->
+                <% if (test.scenarios && test.scenarios.length > 0) { %>
+                    <% test.scenarios.forEach(function(scenario, index) { %>
+                        <div class="scenario" data-index="<%= index %>">
+                            <label>Provider:</label>
+                            <select name="scenarios[<%= index %>][provider]" class="form-select" onchange="updateModelDropdown(this)">
+                                <% providers.forEach(function(provider) { %>
+                                    <option value="<%= provider %>" <%= scenario.provider === provider ? 'selected' : '' %>><%= provider %></option>
+                                <% }); %>
+                            </select>
+                            <label>Model:</label>
+                            <select name="scenarios[<%= index %>][model]" class="form-select">
+                                <% models[scenario.provider].forEach(function(model) { %>
+                                    <option value="<%= model %>" <%= scenario.model === model ? 'selected' : '' %>><%= model %></option>
+                                <% }); %>
+                            </select>
+                            <label>Temperature:</label>
+                            <input type="number" step="0.01" name="scenarios[<%= index %>][temp]" required class="form-control" value="<%= scenario.temp %>">
+                            <label>N:</label>
+                            <input type="number" name="scenarios[<%= index %>][n]" value="<%= scenario.n %>" min="1" required class="form-control">
+                            <button type="button" onclick="removeScenario(this)" class="btn btn-danger">Delete</button>
+                        </div>
+                    <% }); %>
+                <% } %>
             </div>
             <button type="button" id="addScenario" class="btn btn-secondary">Add Scenario</button>
             <button type="submit" class="btn btn-primary">Run</button>
