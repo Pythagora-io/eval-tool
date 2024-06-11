@@ -205,7 +205,7 @@ router.post('/tests/:test_id/review', isAuthenticated, async (req, res) => {
 
     for (const scenario of test.scenarios) {
       for (const result of scenario.results) {
-        const reviewText = `Your job is to review the quality of output of an AI assistant on a specific input.\n\nThe AI assistant was asked the following:\n${test.messages.map(msg => `${msg.role}: ${msg.content}`).join('\n')}\n\nIt responded with:\n${result.response}\n\nTaking into account the instructions, please analyze its output and determine if it's close enough. If it's good enough, output "PASS". If the output wasn't good, output "FAIL".\n\nIMPORTANT: ${test.review_instructions}\n\nRemember, respond with only one word - PASS if the output is okay, FAIL otherwise.`;
+        const reviewText = `Your job is to review the quality of output of an AI assistant on a specific input.\n\nThe AI assistant was asked the following:\n${test.messages.map(msg => `${msg.role}: ${msg.content}`).join('\n')}\n\nIt responded with:\n${result.response}\n\nTaking into account the instructions, please analyze its output and determine if it's close enough. If it's good enough, output "PASS". If the output wasn't good, output "FAIL".\n\nIMPORTANT: ${test.review_instructions}\n\nProvide a detailed analysis of the LLM response, and conclude with either PASS or FAIL keyword.`;
 
         try {
           const reviewResponse = await openai.chat.completions.create({
@@ -216,8 +216,10 @@ router.post('/tests/:test_id/review', isAuthenticated, async (req, res) => {
 
           const reviewOutcome = reviewResponse.choices[0]?.message?.content.includes("PASS") ? 1 : 0;
           result.score = reviewOutcome;
+          result.review = reviewResponse.choices[0]?.message?.content; // Store the review text
         } catch (error) {
           console.error('Failed to review:', error);
+          console.error(error.stack);
           // Optionally handle the error, e.g., by setting a default score or logging
         }
       }
@@ -227,6 +229,7 @@ router.post('/tests/:test_id/review', isAuthenticated, async (req, res) => {
     res.json({ success: true }); // Changed from redirect to JSON response
   } catch (error) {
     console.error('Error during scenario review:', error);
+    console.error(error.stack);
     res.status(500).send('Failed to review scenarios');
   }
 });
