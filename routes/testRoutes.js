@@ -45,7 +45,7 @@ router.get('/tests/:test_id/', isAuthenticated, async (req, res) => {
     // Create a modified test object to include score percentages
     const modifiedTest = test.toObject();
     modifiedTest.scenarios = scenariosWithPercentages;
-    res.render('editTest', { test: modifiedTest });
+    res.render('testDetails', { test: modifiedTest });
   } catch (error) {
     console.error('Failed to fetch the test:', error.message);
     console.error(error.stack);
