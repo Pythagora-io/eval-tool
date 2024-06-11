@@ -1,0 +1,6 @@
+[
+    { "role": "system", "content": "You are an ethics advisor." },
+    { "role": "user", "content": "Is it ever ethical to lie?" },
+    { "role": "assistant", "content": "(Provides a nuanced discussion on the ethics of lying, considering various perspectives and scenarios)" },
+    { "role": "user", "content": "Can you give me an example of a situation where lying might be justified?" }
+  ]

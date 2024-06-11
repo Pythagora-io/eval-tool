@@ -1,0 +1,6 @@
+[
+    { "role": "system", "content": "You are an expert in physics." },
+    { "role": "user", "content": "What is the theory of relativity?" },
+    { "role": "assistant", "content": "The theory of relativity, developed by Albert Einstein, encompasses two interrelated theories: special relativity and general relativity." },
+    { "role": "user", "content": "Can you explain special relativity in simple terms?" }
+  ]

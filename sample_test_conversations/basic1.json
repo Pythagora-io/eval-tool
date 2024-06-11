@@ -1,0 +1,5 @@
+[
+  { "role": "system", "content": "You are a helpful assistant that can provide information about planets." },
+  { "role": "user", "content": "What is the largest planet in our solar system?" },
+  { "role": "assistant", "content": "Jupiter is the largest planet in our solar system." }
+]

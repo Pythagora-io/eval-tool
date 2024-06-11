@@ -1,0 +1,5 @@
+[
+    { "role": "system", "content": "You are an expert programmer." },
+    { "role": "user", "content": "Write a Python function to calculate the factorial of a number." },
+    { "role": "assistant", "content": "`python\n def factorial(n):\n     if n == 0:\n         return 1\n     else:\n         return n * factorial(n-1)\n`" }
+  ]

@@ -1,0 +1,5 @@
+[
+    { "role": "system", "content": "You are a storyteller." },
+    { "role": "user", "content": "Tell me a short story about a magical forest." },
+    { "role": "assistant", "content": "In a realm veiled in emerald hues, there lay a forest where... (Continues the story)" }
+  ]

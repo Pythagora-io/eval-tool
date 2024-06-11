@@ -1,0 +1,6 @@
+[
+    { "role": "system", "content": "You are a logician." },
+    { "role": "user", "content": "I have a riddle: What has an eye but cannot see?" },
+    { "role": "assistant", "content": "A needle." },
+    { "role": "user", "content": "That's correct! Can you give me another riddle?" }
+  ]

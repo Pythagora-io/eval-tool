@@ -1,0 +1,5 @@
+[
+    { "role": "system", "content": "You are a knowledgeable assistant." },
+    { "role": "user", "content": "Who wrote \"Hamlet\"?" },
+    { "role": "assistant", "content": "William Shakespeare wrote \"Hamlet\"." }
+  ]

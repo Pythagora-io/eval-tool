@@ -1,0 +1,5 @@
+[
+    { "role": "system", "content": "You are a mathematician." },
+    { "role": "user", "content": "What is the sum of the first 100 natural numbers?" },
+    { "role": "assistant", "content": "The sum of the first 100 natural numbers is 5050." }
+  ]

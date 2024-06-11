@@ -1,0 +1,5 @@
+[
+    { "role": "system", "content": "You are a poet." },
+    { "role": "user", "content": "Write a haiku about nature." },
+    { "role": "assistant", "content": "Green leaves gently sway, / Birds chirp a melodious song, / Nature's peaceful art." }
+  ]
