@@ -1,59 +1,66 @@
 # Eval Tool
 
-Eval Tool is a web application designed to facilitate the evaluation of various Large Language Models (LLMs) such as OpenAI, Anthropic, and Groq. Users can create, configure, and run tests against different LLMs using specific scenarios, and review the responses to assess the performance of these models.
+**Eval Tool** is a web application designed to evaluate the performance of various Large Language Models (LLMs) including OpenAI, Anthropic, and Groq. It allows users to create, configure, and run tests against different AI models, analyze the responses, and review the results with detailed instructions.
 
 ## Overview
 
-The Eval Tool web application is built using a Node.js and Express backend, with MongoDB as the database to store user data, test configurations, and results. The front-end is rendered using EJS templates and styled with Bootstrap for a responsive user interface. The application follows a Model-View-Controller (MVC) architecture to ensure separation of concerns, enhancing maintainability and scalability. Authentication is managed through session-based authentication to secure user sessions.
+The Eval Tool web application is built using a Node.js and Express backend with MongoDB for data storage. It utilizes a Model-View-Controller (MVC) architecture to separate concerns, making the application scalable and manageable. The front end is rendered using EJS templates and styled with Bootstrap for a responsive design. User authentication is managed via session-based authentication to ensure secure access to the application.
 
 ### Project Structure
-- **Models**: Contains schema definitions for MongoDB using Mongoose.
+
+- **Models**: Contains schema definitions for MongoDB.
 - **Routes**: Defines the server routes for handling HTTP requests.
-- **Views**: EJS templates for generating the HTML content.
-- **Public**: Contains static files like JavaScript, CSS, and image assets.
-- **Config**: Includes configuration files for setting up and securing the application.
+- **Public**: Holds static files like JavaScript, CSS, and images.
+- **Views**: Contains EJS templates for rendering HTML on the client side.
+- **Config**: Includes configuration files for the application, such as database connections.
+- **Controllers**: Logic for handling requests, interacting with the database, and returning responses.
 
 ## Features
 
-- **Test Management**: Users can create, edit, and delete tests, each containing multiple scenarios for evaluating LLMs.
-- **Dynamic Scenario Configuration**: Configure scenarios with different providers, models, and settings directly from the user interface.
-- **Parallel Execution**: Scenarios are executed in parallel to optimize performance and reduce wait times.
-- **Results Review**: Users can review LLM responses, score them, and add notes. The system also supports automated review using AI.
-- **Import/Export Functionality**: Import messages for tests from JSON files and export test configurations.
+- **Test Creation and Management**: Users can create and manage tests with specific scenarios to evaluate different LLMs.
+- **Dynamic Test Configuration**: Configure tests dynamically by selecting AI providers, models, and other parameters.
+- **Parallel Execution**: Tests are executed in parallel to optimize performance and reduce waiting time.
+- **Results Analysis**: Analyze the responses from LLMs based on predefined review instructions and score the adequacy of responses.
+- **User Authentication**: Secure user authentication system to manage access to different functionalities.
 
 ## Getting Started
 
 ### Requirements
+
 - Node.js
-- MongoDB (local installation or cloud instance like MongoDB Atlas)
+- MongoDB
 - NPM (Node Package Manager)
 
 ### Quickstart
-1. **Clone the repository:**
-   ```
-   git clone https://github.com/your-repository/eval-tool.git
-   ```
-2. **Navigate to the project directory:**
-   ```
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://example.com/eval-tool.git
    cd eval-tool
    ```
-3. **Install dependencies:**
-   ```
+
+2. **Install dependencies**:
+   ```bash
    npm install
    ```
-4. **Set up the environment variables:**
-   Copy `.env.example` to `.env` and fill in the necessary API keys and database URL.
-   ```
-   cp .env.example .env
-   ```
-5. **Start the server:**
-   ```
+
+3. **Set up the environment variables**:
+   Copy `.env.example` to `.env` and update the values accordingly.
+
+4. **Start the MongoDB server**:
+   Ensure that MongoDB is running on your system or connect to a remote MongoDB server.
+
+5. **Run the application**:
+   ```bash
    npm start
    ```
-   This will run the server on `http://localhost:3000` by default.
+   This will start the server on the defined PORT, defaulting to 3000.
+
+6. **Access the application**:
+   Open a web browser and go to `http://localhost:3000` to start using the Eval Tool.
 
 ### License
 
-Copyright (c) 2024.
+Copyright (c) 2024. All rights reserved.
 
-This software is proprietary and may not be copied, modified, or distributed without explicit permission from the owner.
+This project is proprietary and not open source. Redistribution or commercial use is strictly prohibited without prior agreement.
