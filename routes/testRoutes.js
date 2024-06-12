@@ -204,9 +204,9 @@ router.get('/tests/:test_id/scenarios/:scenario_index', isAuthenticated, async (
 
 router.post('/tests/:test_id/review', isAuthenticated, async (req, res) => {
   const testId = req.params.test_id;
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
   try {
     const test = await Test.findOne({ test_id: testId });
@@ -217,15 +217,29 @@ router.post('/tests/:test_id/review', isAuthenticated, async (req, res) => {
         const reviewText = `Your job is to review the quality of output of an AI assistant on a specific input.\n\nThe AI assistant was asked the following:\n${test.messages.map(msg => `${msg.role}: ${msg.content}`).join('\n')}\n\nIt responded with:\n${result.response}\n\nTaking into account the instructions, please analyze its output and determine if it's close enough. If it's good enough, output "PASS". If the output wasn't good, output "FAIL".\n\nIMPORTANT: ${test.review_instructions}\n\nProvide a detailed analysis of the LLM response, and conclude with either PASS or FAIL keyword.`;
 
         try {
-          const reviewResponse = await openai.chat.completions.create({
-            model: "gpt-4-turbo-preview",
-            messages: [{role: "system", content: reviewText}],
-            temperature: 0,
-          });
-
-          const reviewOutcome = reviewResponse.choices[0]?.message?.content.includes("PASS") ? 1 : 0;
+          let reviewResponse;
+          if (scenario.provider === 'openai') {
+            reviewResponse = await openai.chat.completions.create({
+              model: "gpt-4-turbo-preview",
+              messages: [{role: "system", content: reviewText}],
+              temperature: 0,
+            });
+          } else if (scenario.provider === 'anthropic') {
+            reviewResponse = await anthropic.messages.create({
+              max_tokens: 1024,
+              messages: [{role: "user", content: reviewText}],
+              model: scenario.model,
+            });
+          } else if (scenario.provider === 'groq') {
+            reviewResponse = await groq.chat.completions.create({
+              messages: [{role: "system", content: reviewText}],
+              model: scenario.model,
+            });
+          }
+          content = extractResponseContent(reviewResponse, scenario.provider);
+          const reviewOutcome = content.includes("PASS") ? 1 : 0;
           result.score = reviewOutcome;
-          result.review = reviewResponse.choices[0]?.message?.content; // Store the review text
+          result.review = content; // Store the review text
         } catch (error) {
           console.error('Failed to review:', error);
           console.error(error.stack);
@@ -252,8 +266,10 @@ function extractResponseContent(response, provider) {
       }
       break;
     case 'anthropic':
-      if (response.content) {
-        return response.content[0].text;
+      if (response.content && typeof response.content === 'string') {
+        return response.content;
+      } else if (response.content && Array.isArray(response.content) && response.content.length > 0) {
+        return response.content.map(item => item.text).join(' ');
       }
       break;
     default:
