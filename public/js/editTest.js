@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <option value="user" ${role === 'user' ? 'selected' : ''}>User</option>
                 <option value="assistant" ${role === 'assistant' ? 'selected' : ''}>Assistant</option>
             </select>
-            <textarea class="form-control content-textarea" name="messages[${newIndex}][content]" rows="2">${content}</textarea>
+            <textarea class="form-control content-textarea" name="messages[${newIndex}][content]" rows="10" style="overflow-y: auto;">${content}</textarea>
             <button type="button" class="btn btn-danger remove-message-btn">Remove</button>
         `;
         messagesList.appendChild(newRow);

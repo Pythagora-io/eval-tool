@@ -23,7 +23,7 @@
                             <option value="user" <%= message.role === 'user' ? 'selected' : '' %>>User</option>
                             <option value="assistant" <%= message.role === 'assistant' ? 'selected' : '' %>>Assistant</option>
                         </select>
-                        <textarea class="form-control content-textarea" name="messages[<%= index %>][content]" rows="2"><%= message.content %></textarea>
+                        <textarea class="form-control content-textarea" name="messages[<%= index %>][content]" rows="10" style="overflow-y: auto;"><%= message.content %></textarea>
                         <button type="button" class="btn btn-danger remove-message-btn">Remove</button>
                     </div>
                     <% }); %>
@@ -34,7 +34,7 @@
             </div>
             <div class="mb-3">
                 <label for="review_instructions" class="form-label">Review Instructions</label>
-                <textarea class="form-control" id="review_instructions" name="review_instructions" rows="3"><%= test.review_instructions %></textarea>
+                <textarea class="form-control" id="review_instructions" name="review_instructions" rows="10"><%= test.review_instructions %></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
