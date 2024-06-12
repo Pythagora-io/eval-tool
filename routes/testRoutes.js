@@ -140,11 +140,14 @@ router.post('/tests/:test_id/run', isAuthenticated, async (req, res) => {
         return (async () => {
           try {
             let response;
+            const system_message = test.messages[0].role === "system" ? test.messages[0].content : undefined;
+
             if (provider === 'anthropic') {
               response = await sdk.messages.create({
                 max_tokens: 1024,
-                messages: test.messages.map(msg => ({ role: msg.role, content: msg.content })),
+                messages: test.messages.slice(1).map(msg => ({ role: msg.role, content: msg.content })),
                 model: model,
+                system: system_message,
               });
             } else {
               response = await sdk.chat.completions.create({
