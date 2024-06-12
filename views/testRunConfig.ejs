@@ -37,7 +37,10 @@
                 <% } %>
             </div>
             <button type="button" id="addScenario" class="btn btn-secondary">Add Scenario</button>
-            <button type="submit" class="btn btn-primary">Run</button>
+            <button type="submit" id="runButton" class="btn btn-primary">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                Run
+            </button>
         </form>
     </div>
     <div id="modelData" data-models='<%= JSON.stringify(models) %>' style="display:none;"></div>

@@ -82,6 +82,7 @@ function submitForm(e) {
     };
 
     console.log('Submitting form:', json);
+    document.getElementById('runButton').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Running...'; // Show spinner
     fetch(`/tests/${json.test_id}/run`, {
         method: 'POST',
         headers: {
@@ -92,9 +93,17 @@ function submitForm(e) {
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
-        window.location.href = `/tests/${json.test_id}/`;
+        if (data.success) {
+            window.location.href = `/tests/${json.test_id}/`;
+        } else {
+            alert('Failed to run test: ' + (data.error || 'Unknown error'));
+        }
     })
     .catch((error) => {
         console.error('Error submitting test run configuration:', error);
+        alert('Error submitting test run configuration: ' + error.message);
+    })
+    .finally(() => {
+        document.getElementById('runButton').innerHTML = 'Run'; // Hide spinner
     });
 }

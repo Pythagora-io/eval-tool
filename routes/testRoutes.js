@@ -116,7 +116,7 @@ router.post('/tests/:test_id/run', isAuthenticated, async (req, res) => {
   try {
     const testId = req.params.test_id;
     const test = await Test.findOne({ test_id: testId });
-    if (!test) return res.status(404).send('Test not found');
+    if (!test) return res.status(404).json({ error: 'Test not found' });
 
     const scenarios = Array.isArray(req.body.scenarios) ? req.body.scenarios : JSON.parse(req.body.scenarios);
 
@@ -175,11 +175,11 @@ router.post('/tests/:test_id/run', isAuthenticated, async (req, res) => {
     test.scenarios = scenarioResults.filter(scenario => scenario !== null);
     await test.save();
     console.log(`Test ${testId} run completed.`);
-    res.redirect(`/tests/${testId}/`);
+    res.json({ success: true, testId: testId }); // Send JSON response instead of redirecting
   } catch (error) {
     console.error('Failed to run the test:', error.message);
     console.error(error.stack);
-    res.status(500).send('Error running the test');
+    res.status(500).json({ error: 'Error running the test' });
   }
 });
 
