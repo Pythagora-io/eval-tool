@@ -28,7 +28,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     messagesList.addEventListener('click', function(e) {
         if (e.target.classList.contains('remove-message-btn')) {
-            e.target.parentElement.remove();
+            const parentDiv = e.target.parentElement;
+            const indexToRemove = parseInt(parentDiv.getAttribute('data-index'));
+            parentDiv.remove();
+            // Update indices of remaining message rows
+            document.querySelectorAll('.message-row').forEach((row, index) => {
+                row.setAttribute('data-index', index);
+                row.querySelectorAll('select, textarea').forEach(input => {
+                    input.name = input.name.replace(/\[\d+\]/, `[${index}]`);
+                });
+            });
             console.log('Removed message row');
         }
     });
@@ -80,6 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 data[key] = value;
             }
         });
+
+        // Filter out any null entries from messages
+        data.messages = data.messages.filter(message => message.role && message.content);
 
         // Extract test_id from the current URL
         const testIdMatch = window.location.pathname.match(/\/tests\/([^\/]+)/);
