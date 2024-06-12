@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('An error occurred. Please try again.');
         })
         .finally(() => {
-            reviewButton.innerHTML = 'Review Scenarios'; // Hide spinner
+            reviewButton.innerHTML = 'Save'; // Hide spinner
         });
     });
 });
