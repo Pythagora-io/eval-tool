@@ -6,6 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const testId = this.action.replace(/.*\/tests\//, '').split('/review')[0];
         const url = `/tests/${testId}/review`;
+        const reviewInstructions = document.getElementById('review_instructions').value.trim();
+
+        if (!reviewInstructions) {
+            alert('Please fill in the review instructions and save the test before reviewing.');
+            return;
+        }
+
+        const reviewButton = document.querySelector('button[type="submit"]');
+        reviewButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Reviewing...'; // Show spinner
 
         fetch(url, {
             method: 'POST',
@@ -32,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error during review scenarios:', error);
             alert('An error occurred. Please try again.');
+        })
+        .finally(() => {
+            reviewButton.innerHTML = 'Review Scenarios'; // Hide spinner
         });
     });
 });
